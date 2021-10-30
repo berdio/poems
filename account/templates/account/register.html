@@ -1,0 +1,9 @@
+<h1>Sign Up</h1>
+
+<form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+
+    {{form}}
+    <input name="next" type="hidden" value="{{next}}" />
+    <input type="submit" value="Sign Up">
+</form>

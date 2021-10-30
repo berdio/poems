@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+<div class="container">
+    <div class="row" style="padding-top: 5%;">
+        <div class="col-sm-10"><h1>{{poem.author.full_name}} - {{poem.name}}</h1></div>
+        {% if user.is_staff %}
+        <a class="btn-sm" href="{% url 'update_poem' poem.id %}" role="button"><div class="col-sm-2"><i class='far fa-edit' style='font-size:24px'>Edit</i></div></a>
+        {% endif %}
+    </div>
+    
+    <pre>{{poem.text}}</pre>
+    
+    <div class="container">
+        <form method="post" action="{% url 'comment' poem.id %}">
+            {% csrf_token %}
+            {{comment_form}}
+            <input type="submit" value="Comment">
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

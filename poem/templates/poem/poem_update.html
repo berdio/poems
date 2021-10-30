@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="center-block">
+
+            <form method="post" style="padding-top: 5%;" action="{% url 'update_poem' poem.id %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="col text-center" style="padding-top: 2%;">
+                    <input class="text-center" type="submit" value="Update">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .clampedText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4; /* number of lines to show */
+        -webkit-box-orient: vertical;
+    }
+</style>
+
+<div class="container">
+
+<h1 class="text-center">Poems</h1>
+    <!-- <form class="input-group rounded" action="{% url 'poems' %}" method="get">
+        <input id='search' type="search" class="form-control rounded" placeholder="Search" value="{{search}}" aria-label="Search"
+        aria-describedby="search-addon" name="search" />
+        <span class="input-group-text border-0" id="search-addon">
+        <button type="submit" value="Search"><i class="fa fa-search"></i></button>
+        </span>
+    </form> -->
+    {% for p in poem_list %}
+    <hr>
+    <div>
+        <a href="/poems/{{p.id}}">
+            <p class="font-weight-bold">{{p.author.full_name}} - {{p.name}}</p>
+        </a>
+        <pre class="clampedText">{{p.text}}</pre>
+    </div>
+    {% endfor %}
+    <!-- <table class="table">
+        <thead>
+            <th>Author  
+                {% if sort_by_author == 'asc' %}
+                <i onclick="sortByAuthor('desc')" class="bi bi-sort-up"></i>
+                {% else %}
+                <i onclick="sortByAuthor('asc')" class="bi bi-sort-down"></i>
+                {% endif %}
+            </th>
+            <th>Title  
+                {% if sort_by_name == 'asc' %}
+                <i onclick="sortByName('desc')" class="bi bi-sort-up"></i>
+                {% else %}
+                <i onclick="sortByName('asc')" class="bi bi-sort-down"></i>
+                {% endif %}
+            </th>
+        </thead>
+        <tbody>
+            {% for p in poems %}
+            <tr>
+                <td>{{p.author.full_name}}</td>
+                <td><a href="/poems/{{p.id}}">{{p.name}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> -->
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% if page_obj.number < page_obj.paginator.num_pages %}
+                        <a href="?page={{page_obj.paginator.num_pages}}">last</a>
+                    {% endif %}
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function sortByAuthor(order) {
+    var search = document.getElementById('search').value
+    location.href = '{% url "poems" %}?sort_by_author=' + order + '&sort_by_name=' + '{{sort_by_name}}' + '&search=' + search;
+}
+
+function sortByName(order) {
+    var search = document.getElementById('search').value
+    location.href = '{% url "poems" %}?sort_by_name=' + order + '&sort_by_author=' + '{{sort_by_author}}' + '&search=' + search;
+}
+</script>
+
+{% endblock %}
